@@ -39,7 +39,7 @@ void LYSOPlots()
   TCanvas* cE0VsE1 = new TCanvas("cE0VsE1","cE0VsE1", 800, 800);
   cE0VsE1->SetGridx(1);
   cE0VsE1->SetGridy(1);
-  cE0VsE1->SetRightMargin(10);
+  cE0VsE1->SetRightMargin(0.16);
   TH2F* hE0VsE1 = new TH2F("hE0VsE1", "hE0VsE1", 200, 0, 1000, 200, 0, 1000);
   t->Draw("E[0] : E[1] >>hE0VsE1","","goff");
   //hE0VsE1->Sumw2();
@@ -52,16 +52,21 @@ void LYSOPlots()
   hE0VsE1->GetYaxis()->SetTitleOffset(1.8);
   hE0VsE1->GetXaxis()->SetLabelSize(0.045);
   hE0VsE1->GetYaxis()->SetLabelSize(0.045);
-  hE0VsE1->GetXaxis()->SetNdivisions(10);
-  hE0VsE1->GetYaxis()->SetNdivisions(10);
+  hE0VsE1->GetZaxis()->SetLabelSize(0.045);
+  //hE0VsE1->GetXaxis()->SetNdivisions(10);
+  //hE0VsE1->GetYaxis()->SetNdivisions(10);
   hE0VsE1->SetLineWidth(3);
   hE0VsE1->SetFillStyle(3002);
   hE0VsE1->SetFillColor(kPink-2);
   hE0VsE1->Draw("colz");
   hE0VsE1->Fit("gaus", "", "", -4, 4);
+ TPave *pave = new TPave(427,789,945,954,1,"br");
+   pave->SetFillColor(10);
+   pave->SetLineWidth(2);
+   pave->Draw();
 
-  PutText(0.65, 0.77, kBlack, "LAPD");
-  PutText(0.65, 0.7, kBlack, "Background run");
+   PutText(0.47, 0.8, kBlack, "LAPD",0.045);
+  PutText(0.47, 0.75, kBlack, "Background run",0.045);
 
   cE0VsE1->SaveAs("cE0VsE1.png");
 }

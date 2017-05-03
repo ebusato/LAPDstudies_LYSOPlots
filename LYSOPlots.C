@@ -1,7 +1,7 @@
 
 void LYSOPlots()
 {
-  TFile* f = new TFile("~/godaq_rootfiles/analysis_v2.19-calibG2/run44.root", "read");
+  TFile* f = new TFile("~/godaq_rootfiles/analysis_v2.19-calibC1/run44.root", "read");
   TTree* t = (TTree*) f->Get("tree");
 
 
@@ -36,16 +36,52 @@ void LYSOPlots()
   cCRT->SaveAs("cCRT.png");
 
   
+
+
+  TCanvas* cE = new TCanvas("cE","cE", 1000,400);
+  cE->SetGridx(1);
+  cE->SetGridy(1);
+  TH1F* hE = new TH1F("hE", "hE", 200, 0, 1000);
+  t->Draw("E>>hE","Sat==0 && Ampl > 600","goff");
+  //hE->Sumw2();
+  hE->Scale(1/hE->Integral());
+  hE->GetYaxis()->SetTitle("Entries [a. u.]");
+  hE->GetXaxis()->SetTitle("E [keV]");
+  hE->GetXaxis()->SetTitleSize(0.06);
+  hE->GetYaxis()->SetTitleSize(0.06);
+  hE->GetXaxis()->SetTitleOffset(1.25);
+  hE->GetYaxis()->SetTitleOffset(1.3);
+  hE->GetXaxis()->SetLabelSize(0.06);
+  hE->GetYaxis()->SetLabelSize(0.06);
+  hE->GetXaxis()->SetNdivisions(10);
+  hE->GetYaxis()->SetNdivisions(10);
+  hE->SetLineWidth(3);
+  hE->SetFillStyle(3002);
+  hE->SetFillColor(kPink-2);
+  hE->Draw();
+
+  PutText(0.6, 0.77, kBlack, "LAPD", 0.06);
+  PutText(0.6, 0.7, kBlack, "Background run", 0.06);
+
+  cE->SaveAs("cE.png");
+
+
+
+
+
+
+
+
   TCanvas* cE0VsE1 = new TCanvas("cE0VsE1","cE0VsE1", 800, 800);
   cE0VsE1->SetGridx(1);
   cE0VsE1->SetGridy(1);
   cE0VsE1->SetRightMargin(0.16);
   TH2F* hE0VsE1 = new TH2F("hE0VsE1", "hE0VsE1", 200, 0, 1000, 200, 0, 1000);
-  t->Draw("E[0] : E[1] >>hE0VsE1","","goff");
+  t->Draw("E[0] : E[1] >>hE0VsE1","Sat[0]==0&&Sat[1]==0","goff");
   //hE0VsE1->Sumw2();
   hE0VsE1->Scale(1/hE0VsE1->Integral());
-  hE0VsE1->GetYaxis()->SetTitle("Entries [a. u.]");
-  hE0VsE1->GetXaxis()->SetTitle("E [keV]");
+  hE0VsE1->GetYaxis()->SetTitle("E_{0} [keV]");
+  hE0VsE1->GetXaxis()->SetTitle("E_{1} [keV]");
   hE0VsE1->GetXaxis()->SetTitleSize(0.045);
   hE0VsE1->GetYaxis()->SetTitleSize(0.045);
   hE0VsE1->GetXaxis()->SetTitleOffset(1.25);
@@ -69,4 +105,6 @@ void LYSOPlots()
   PutText(0.47, 0.75, kBlack, "Background run",0.045);
 
   cE0VsE1->SaveAs("cE0VsE1.png");
+
+
 }

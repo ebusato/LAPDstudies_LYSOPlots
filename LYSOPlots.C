@@ -4,6 +4,8 @@ void LYSOPlots()
   TFile* f = new TFile("~/godaq_rootfiles/analysis_v2.19-calibC1/run44.root", "read");
   TTree* t = (TTree*) f->Get("tree");
 
+  TFile* f1 = new TFile("~/godaq_rootfiles/analysis_v2.19-calibA1/run12.root", "read");
+  TTree* t1 = (TTree*) f1->Get("tree");
 
   TCanvas* cCRT = new TCanvas("cCRT","cCRT");
   cCRT->SetGridx(1);
@@ -41,7 +43,7 @@ void LYSOPlots()
   TCanvas* cE = new TCanvas("cE","cE", 1000,400);
   cE->SetGridx(1);
   cE->SetGridy(1);
-  TH1F* hE = new TH1F("hE", "hE", 200, 0, 1000);
+  TH1F* hE = new TH1F("hE", "hE", 200, 0, 1100);
   t->Draw("E>>hE","Sat==0 && Ampl > 600","goff");
   //hE->Sumw2();
   hE->Scale(1/hE->Integral());
@@ -66,7 +68,33 @@ void LYSOPlots()
   cE->SaveAs("cE.png");
 
 
+  TCanvas* cELeadWall = new TCanvas("cELeadWall","cELeadWall", 1000,400);
+  cELeadWall->SetGridx(1);
+  cELeadWall->SetGridy(1);
+  TH1F* hELeadWall = new TH1F("hELeadWall", "hELeadWall", 200, 0, 1100);
+  t1->Draw("E[0]>>hELeadWall","abs(T30[0]-T30[1])>5 && Sat[0]==0 && Ampl[0] > 600","goff");
+  //hE->Sumw2();
+  hELeadWall->Scale(1/hELeadWall->Integral());
+  hELeadWall->GetYaxis()->SetTitle("Entries [a. u.]");
+  hELeadWall->GetXaxis()->SetTitle("E [keV]");
+  hELeadWall->GetXaxis()->SetTitleSize(0.06);
+  hELeadWall->GetYaxis()->SetTitleSize(0.06);
+  hELeadWall->GetXaxis()->SetTitleOffset(1.25);
+  hELeadWall->GetYaxis()->SetTitleOffset(1.3);
+  hELeadWall->GetXaxis()->SetLabelSize(0.06);
+  hELeadWall->GetYaxis()->SetLabelSize(0.06);
+  hELeadWall->GetXaxis()->SetNdivisions(10);
+  hELeadWall->GetYaxis()->SetNdivisions(10);
+  hELeadWall->SetLineWidth(3);
+  hELeadWall->SetFillStyle(3002);
+  hELeadWall->SetFillColor(kPink-2);
+  hELeadWall->Draw();
 
+  PutText(0.2, 0.8, kBlack, "LAPD", 0.06);
+  PutText(0.2, 0.73, kBlack, "Background run", 0.06);
+  PutText(0.2, 0.66, kBlack, "Lead wall between two sides of LAPD", 0.06);
+
+  cELeadWall->SaveAs("cELeadWall.png");
 
 
 

@@ -10,7 +10,7 @@ void LYSOPlots()
   TCanvas* cCRT = new TCanvas("cCRT","cCRT");
   cCRT->SetGridx(1);
   cCRT->SetGridy(1);
-  TH1F* hCRT = new TH1F("hCRT", "hCRT", 200, -10, 10);
+  TH1F* hCRT = new TH1F("hCRT", "hCRT", 100, -10, 10);
   t->Draw("T30[0] - T30[1]>>hCRT","","goff");
   //hCRT->Sumw2();
   hCRT->Scale(1/hCRT->Integral());
@@ -26,14 +26,14 @@ void LYSOPlots()
   hCRT->GetYaxis()->SetNdivisions(10);
   hCRT->SetLineWidth(3);
   hCRT->SetFillStyle(3002);
-  hCRT->SetFillColor(kPink-2);
+  hCRT->SetFillColor(kGreen-2);
   hCRT->Draw();
   hCRT->Fit("gaus", "", "", -4, 4);
 
   PutText(0.25, 0.77, kBlack, "LAPD");
   PutText(0.25, 0.7, kBlack, "Background run");
 
-  PutText(0.58, 0.75, kBlack, "CRT (FWHM) = 3.4 ns");
+  PutText(0.6, 0.72, kBlack, "CRT (FWHM) = 3.4 ns");
 
   cCRT->SaveAs("cCRT.png");
 
